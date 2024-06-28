@@ -1,12 +1,16 @@
 package dt_maze_challenge;
 
+import dt_maze_challenge.action.ActionMaker;
+import dt_maze_challenge.action.ActionSet;
 import dt_maze_challenge.action.Rotate;
 import dt_maze_challenge.action.Step;
 import dt_maze_challenge.maze.Maze;
+import dt_maze_challenge.solver.Solver;
 import dt_maze_challenge.xmlHandler.FileReader;
 import dt_maze_challenge.xmlHandler.XmlProcessor;
 import dt_maze_challenge.xmlHandler.XmlWriter;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,17 +19,14 @@ public class Solution {
 		String mazeXml = args.length > 0 ? args[0] : FileReader.readFromFile("example_maze_1.txt");
 		Maze maze = XmlProcessor.processXml(mazeXml);
 
+		var solver = new Solver();
+		solver.solve(maze);
+
 		maze.showMaze();
 
-		List<Step> steps = new ArrayList<>();
-		steps.add(new Step(1,2));
-		steps.add(new Step(3,4));
+		var actionSet = ActionMaker.makeActionSet(maze);
 
-		List<Rotate> rotates = new ArrayList<>();
-		rotates.add(new Rotate(1,2));
-		rotates.add(new Rotate(7,2));
-
-		String result = XmlWriter.writeXml(steps, rotates);
+		String result = XmlWriter.writeXml(actionSet);
 
 		System.out.println("----------------------");
 		System.out.println(result);

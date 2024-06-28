@@ -1,7 +1,6 @@
 package dt_maze_challenge.xmlHandler;
 
-import dt_maze_challenge.action.Rotate;
-import dt_maze_challenge.action.Step;
+import dt_maze_challenge.action.ActionSet;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -15,12 +14,14 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.StringWriter;
-import java.util.List;
 
 public class XmlWriter {
     private XmlWriter() {}
-    public static String writeXml(List<Step> steps, List<Rotate> rotates) {
+    public static String writeXml(ActionSet actionSet) {
         String result = "";
+        if (actionSet.isEmpty()) {
+            return result;
+        }
         try {
             // Step 1: Create a new Document
             DocumentBuilderFactory documentFactory = DocumentBuilderFactory.newInstance();
@@ -31,7 +32,7 @@ public class XmlWriter {
             Element root = document.createElement("Actions");
             document.appendChild(root);
 
-            steps.forEach( step -> {
+            actionSet.getSteps().forEach( step -> {
                 Element st = document.createElement("Step");
                 root.appendChild(st);
                 Element direction = document.createElement("Direction");
@@ -43,7 +44,7 @@ public class XmlWriter {
             }
             );
 
-            rotates.forEach( rotate -> {
+            actionSet.getRotates().forEach( rotate -> {
                 Element rot = document.createElement("Rotate");
                 root.appendChild(rot);
                 Element direction = document.createElement("District");

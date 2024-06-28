@@ -10,7 +10,7 @@ public class Maze {
     private static final int SIZE = 17;
     private Coordinate start;
     private Coordinate end;
-    private List<MazeType> walkableTypes = Arrays.asList(MazeType.EMPTY, MazeType.ESCAPE, MazeType.TRAP);
+    private final List<MazeType> walkableTypes = Arrays.asList(MazeType.EMPTY, MazeType.ESCAPE, MazeType.TRAP);
 
     public Maze(int level) {
         this.coordinates = new MazeType[SIZE][SIZE];
@@ -41,7 +41,23 @@ public class Maze {
     public void showMaze() {
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) {
-                System.out.print(this.coordinates[i][j].ordinal());
+                String ord = String.valueOf(this.coordinates[i][j].ordinal());
+                if (this.coordinates[i][j] == MazeType.WALL) {
+                    ord = "|";
+                }
+                if (this.coordinates[i][j] == MazeType.EMPTY) {
+                    ord = " ";
+                }
+                if (this.coordinates[i][j] == MazeType.STEP) {
+                    ord = ".";
+                }
+                if (this.coordinates[i][j] == MazeType.ENTRY) {
+                    ord = "S";
+                }
+                if (this.coordinates[i][j] == MazeType.ESCAPE) {
+                    ord = "E";
+                }
+                System.out.print(ord + " ");
             }
             System.out.println();
         }
@@ -63,8 +79,15 @@ public class Maze {
     }
 
     public boolean anyDoorIsBlocked() {
-        // TODO implementálni, a 3-as típusú forgatáskor hasznos lesz
-        return false;
+        List<Coordinate> possibleCoordinatesForStart = this.start.getNeighbours(SIZE - 1);
+        List<Coordinate> possibleCoordinatesForEnd = this.end.getNeighbours(SIZE - 1);
+        boolean startBlocked = possibleCoordinatesForStart.stream().noneMatch( coord ->
+            walkableTypes.contains(this.coordinates[coord.x()][coord.y()])
+        );
+        boolean endBlocked = possibleCoordinatesForEnd.stream().noneMatch( coord ->
+                walkableTypes.contains(this.coordinates[coord.x()][coord.y()])
+        );
+        return startBlocked || endBlocked;
     }
 
     public Coordinate getStart() {
