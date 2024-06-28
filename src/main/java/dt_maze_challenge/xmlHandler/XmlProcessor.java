@@ -39,14 +39,25 @@ public class XmlProcessor {
         Maze maze = new Maze(Integer.parseInt(element.getTextContent()));
 
         getCoordinates(document.getElementsByTagName("StartPoint"))
-                .forEach( x -> maze.getCoordinates()[x.x() - 1][x.y() - 1] = MazeType.ENTRY);
+                .forEach( it -> {
+                            int coorX = it.x() - 1;
+                            int coorY = it.y() - 1;
+                            maze.setStart(new Coordinate(coorX, coorY));
+                            maze.getCoordinates()[coorX][coorY] = MazeType.ENTRY;
+                        }
+                );
         getCoordinates(document.getElementsByTagName("EscapePoint"))
-                .forEach( x -> maze.getCoordinates()[x.x() - 1][x.y() - 1] = MazeType.ESCAPE);
-
+                .forEach( it -> {
+                            int coorX = it.x() - 1;
+                            int coorY = it.y() - 1;
+                            maze.setEnd(new Coordinate(coorX, coorY));
+                            maze.getCoordinates()[coorX][coorY] = MazeType.ESCAPE;
+                    }
+                );
         getCoordinates(document.getElementsByTagName("Wall"))
-                .forEach( x -> maze.getCoordinates()[x.x() - 1][x.y() - 1] = MazeType.WALL);
+                .forEach( it -> maze.getCoordinates()[it.x() - 1][it.y() - 1] = MazeType.WALL);
         getCoordinates(document.getElementsByTagName("Trap"))
-                .forEach( x -> maze.getCoordinates()[x.x() - 1][x.y() - 1] = MazeType.TRAP);
+                .forEach( it -> maze.getCoordinates()[it.x() - 1][it.y() - 1] = MazeType.TRAP);
 
         return maze;
     }
