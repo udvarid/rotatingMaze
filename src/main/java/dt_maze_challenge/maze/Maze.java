@@ -11,6 +11,7 @@ public class Maze {
     private Coordinate start;
     private Coordinate end;
     private final List<MazeType> walkableTypes = Arrays.asList(MazeType.EMPTY, MazeType.ESCAPE, MazeType.TRAP);
+    private List<Coordinate> steps = new ArrayList<>();
 
     public Maze(int level) {
         this.coordinates = new MazeType[SIZE][SIZE];
@@ -36,6 +37,14 @@ public class Maze {
 
     public int getLevel() {
         return level;
+    }
+
+    public List<Coordinate> getSteps() {
+        return steps;
+    }
+
+    public void setSteps(List<Coordinate> steps) {
+        this.steps = steps;
     }
 
     public void showMaze() {

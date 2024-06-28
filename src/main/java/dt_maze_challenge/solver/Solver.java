@@ -5,8 +5,11 @@ import dt_maze_challenge.maze.CoordinateWithPrevious;
 import dt_maze_challenge.maze.Maze;
 import dt_maze_challenge.maze.MazeType;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
@@ -48,15 +51,19 @@ class SolverTypeOne {
 
         if (endFound) {
             Coordinate coordinate = maze.getEnd();
+            List<Coordinate> steps = new ArrayList<>();
             boolean startFound = false;
             while (!startFound) {
                 coordinate = visited.get(coordinate);
                 if (maze.getType(coordinate) == MazeType.ENTRY) {
                     startFound = true;
                 } else {
+                    steps.add(coordinate);
                     maze.getCoordinates()[coordinate.x()][coordinate.y()] = MazeType.STEP;
                 }
             }
+            Collections.reverse(steps);
+            maze.setSteps(steps);
         }
     }
 }
