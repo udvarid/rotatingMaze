@@ -5,13 +5,15 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Maze {
+    private static final int SIZE = 17;
+    private final List<MazeType> walkableTypes = Arrays.asList(MazeType.EMPTY, MazeType.ESCAPE, MazeType.TRAP);
+
     private final MazeType[][] coordinates;
     private final int level;
-    private static final int SIZE = 17;
     private Coordinate start;
     private Coordinate end;
-    private final List<MazeType> walkableTypes = Arrays.asList(MazeType.EMPTY, MazeType.ESCAPE, MazeType.TRAP);
     private List<CoordinateWithTrap> steps = new ArrayList<>();
+    private int cost;
 
     public Maze(int level) {
         this.coordinates = new MazeType[SIZE][SIZE];
@@ -45,6 +47,14 @@ public class Maze {
 
     public void setSteps(List<CoordinateWithTrap> steps) {
         this.steps = steps;
+    }
+
+    public int getCost() {
+        return cost;
+    }
+
+    public void setCost(int cost) {
+        this.cost = cost;
     }
 
     public void showMaze() {

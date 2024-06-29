@@ -46,7 +46,9 @@ public class ActionMaker {
         if (maze.getLevel() == 3) {
             // TODO rotationList feltöltés, ehhez kell még extra mező a maze-be
         }
-        return new ActionSet(aggregateSteps(stepList),rotationList);
+        var actionSet = new ActionSet(aggregateSteps(stepList),rotationList);
+        actionSet.setStepCost(stepList.size());
+        return actionSet;
     }
 
     private static List<Step> aggregateSteps(List<Step> steps) {

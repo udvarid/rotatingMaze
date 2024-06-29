@@ -22,8 +22,7 @@ public class Solver {
     public void solve(Maze maze) {
         switch (maze.getLevel()) {
             case 1 -> (new SolverTypeOne()).solve(maze);
-            case 2 -> (new SolverTypeTwo()).solve(maze);
-            case 3 -> (new SolverTypeTwo()).solve(maze);
+            case 2, 3 -> (new SolverTypeTwo()).solve(maze);
             default -> System.out.println("Unhandled level");
         }
     }

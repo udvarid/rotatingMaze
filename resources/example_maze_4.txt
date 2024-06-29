@@ -329,10 +329,6 @@
            <Row>13</Row>
            <Column>7</Column>
        </Wall>	  	 
-	   <Trap>
-           <Row>13</Row>
-           <Column>14</Column>
-       </Trap>	 
 	   <Wall>
            <Row>14</Row>
            <Column>5</Column>
