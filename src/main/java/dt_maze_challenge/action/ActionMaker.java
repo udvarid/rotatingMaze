@@ -9,6 +9,7 @@ import java.util.List;
 
 public class ActionMaker {
     private ActionMaker() {}
+    public static final int ROTATION_COST = 5;
     public static ActionSet makeActionSet(Maze maze) {
         var stepCoordinates = maze.getSteps();
         if (stepCoordinates.isEmpty()) {
@@ -43,9 +44,22 @@ public class ActionMaker {
 
 
         List<Rotate> rotationList = new ArrayList<>();
-        if (maze.getLevel() == 3) {
-            // TODO rotationList feltöltés, ehhez kell még extra mező a maze-be
-        }
+        if (maze.getLevel() == 3 && maze.isPermutated()) {
+            var permutation = maze.getPermutation();
+            for (int i = 0; i < permutation.length(); i++) {
+                char ch = permutation.charAt(i);
+                if (ch != '0') {
+                    switch (ch) {
+                        case '1' -> rotationList.add(new Rotate(i + 1, 1));
+                        case '2' -> rotationList.add(new Rotate(i + 1, 2));
+                        case '3' -> {
+                            rotationList.add(new Rotate(i + 1, 1));
+                            rotationList.add(new Rotate(i + 1, 1));
+                            }
+                        }
+                    }
+                }
+            }
         var actionSet = new ActionSet(aggregateSteps(stepList),rotationList);
         actionSet.setStepCost(stepList.size());
         return actionSet;

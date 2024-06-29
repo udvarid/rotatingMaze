@@ -5,7 +5,8 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Maze {
-    private static final int SIZE = 17;
+    public static final int SIZE = 17;
+    private static final String NO_PERMUTATION = "000000000";
     private final List<MazeType> walkableTypes = Arrays.asList(MazeType.EMPTY, MazeType.ESCAPE, MazeType.TRAP);
 
     private final MazeType[][] coordinates;
@@ -13,12 +14,29 @@ public class Maze {
     private Coordinate start;
     private Coordinate end;
     private List<CoordinateWithTrap> steps = new ArrayList<>();
-    private int cost;
+    private String permutation;
 
     public Maze(int level) {
         this.coordinates = new MazeType[SIZE][SIZE];
         this.level = level;
+        this.permutation = NO_PERMUTATION;
         fillUpEmptyMaze();
+    }
+
+    public Maze(int level, MazeType[][] coordinates, String permutation) {
+        this.coordinates = copy(coordinates);
+        this.level = level;
+        this.permutation = permutation;
+    }
+
+    private MazeType[][] copy(MazeType[][] coordinates) {
+        MazeType[][] protoType = new MazeType[SIZE][SIZE];
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                protoType[i][j] = coordinates[i][j];
+            }
+        }
+        return protoType;
     }
 
     private void fillUpEmptyMaze() {
@@ -49,12 +67,12 @@ public class Maze {
         this.steps = steps;
     }
 
-    public int getCost() {
-        return cost;
+    public String getPermutation() {
+        return permutation;
     }
 
-    public void setCost(int cost) {
-        this.cost = cost;
+    public boolean isPermutated() {
+        return !permutation.equals(NO_PERMUTATION);
     }
 
     public void showMaze() {
