@@ -6,5 +6,6 @@ public enum MazeType {
     TRAP,
     ENTRY,
     ESCAPE,
-    STEP
+    STEP,
+    STEP_ON_TRAP
 }

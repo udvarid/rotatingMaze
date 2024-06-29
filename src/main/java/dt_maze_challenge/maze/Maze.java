@@ -11,7 +11,7 @@ public class Maze {
     private Coordinate start;
     private Coordinate end;
     private final List<MazeType> walkableTypes = Arrays.asList(MazeType.EMPTY, MazeType.ESCAPE, MazeType.TRAP);
-    private List<Coordinate> steps = new ArrayList<>();
+    private List<CoordinateWithTrap> steps = new ArrayList<>();
 
     public Maze(int level) {
         this.coordinates = new MazeType[SIZE][SIZE];
@@ -39,11 +39,11 @@ public class Maze {
         return level;
     }
 
-    public List<Coordinate> getSteps() {
+    public List<CoordinateWithTrap> getSteps() {
         return steps;
     }
 
-    public void setSteps(List<Coordinate> steps) {
+    public void setSteps(List<CoordinateWithTrap> steps) {
         this.steps = steps;
     }
 
@@ -59,6 +59,9 @@ public class Maze {
                 }
                 if (this.coordinates[i][j] == MazeType.STEP) {
                     ord = ".";
+                }
+                if (this.coordinates[i][j] == MazeType.STEP_ON_TRAP) {
+                    ord = "*";
                 }
                 if (this.coordinates[i][j] == MazeType.ENTRY) {
                     ord = "S";

@@ -2,7 +2,55 @@ package dt_maze_challenge.maze;
 
 import java.util.Objects;
 
-public record CoordinateWithPrevious(Coordinate current, Coordinate previous) {
+public class CoordinateWithPrevious {
+
+    private Coordinate current;
+    private Coordinate previous;
+    private int length;
+    private int wait;
+
+    public CoordinateWithPrevious(Coordinate current, Coordinate previous) {
+        this.current = current;
+        this.previous = previous;
+    }
+
+    public CoordinateWithPrevious(Coordinate current, Coordinate previous, int length) {
+        this.current = current;
+        this.previous = previous;
+        this.length = length;
+    }
+
+    public Coordinate getCurrent() {
+        return current;
+    }
+
+    public Coordinate getPrevious() {
+        return previous;
+    }
+
+    public int getLength() {
+        return length;
+    }
+
+    public void increaseLength() {
+        length++;
+    }
+
+    public void putToWait() {
+        this.wait = this.length;
+    }
+
+    public void decreaseWait() {
+        if (this.wait > 0) {
+            wait--;
+        }
+    }
+
+    public boolean readyToGo() {
+        return wait == 0;
+    }
+
+
 
     @Override
     public boolean equals(Object o) {

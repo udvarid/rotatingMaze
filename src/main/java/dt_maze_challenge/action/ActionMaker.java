@@ -4,20 +4,43 @@ import dt_maze_challenge.maze.Coordinate;
 import dt_maze_challenge.maze.Maze;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class ActionMaker {
     private ActionMaker() {}
     public static ActionSet makeActionSet(Maze maze) {
-        List<Step> stepList = new ArrayList<>();
         var stepCoordinates = maze.getSteps();
-        stepList.add(createStep(maze.getStart(), stepCoordinates.get(0)));
-
-        int i = 0;
-        for (i = 0; i < stepCoordinates.size() - 1; i++) {
-            stepList.add(createStep(stepCoordinates.get(i), stepCoordinates.get(i + 1)));
+        if (stepCoordinates.isEmpty()) {
+            return new ActionSet(Collections.emptyList(), Collections.emptyList());
         }
-        stepList.add(createStep(stepCoordinates.get(i), maze.getEnd()));
+
+        boolean isTrapFounded;
+        List<Step> stepList = new ArrayList<>();
+        do {
+            isTrapFounded = false;
+            stepList.add(createStep(maze.getStart(), stepCoordinates.get(0).getCoordinate()));
+            if (stepCoordinates.get(0).isTrap()) {
+                stepCoordinates.get(0).setTrap(false);
+                isTrapFounded = true;
+                continue;
+            }
+            int i;
+            for (i = 0; i < stepCoordinates.size() - 1; i++) {
+                stepList.add(createStep(stepCoordinates.get(i).getCoordinate(), stepCoordinates.get(i + 1).getCoordinate()));
+                if (stepCoordinates.get(i + 1).isTrap()) {
+                    stepCoordinates.get(i + 1).setTrap(false);
+                    isTrapFounded = true;
+                    break;
+                }
+            }
+            if (!isTrapFounded) {
+                stepList.add(createStep(stepCoordinates.get(i).getCoordinate(), maze.getEnd()));
+            }
+        } while (isTrapFounded);
+
+
+
 
         List<Rotate> rotationList = new ArrayList<>();
         if (maze.getLevel() == 3) {
