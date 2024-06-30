@@ -4,5 +4,5 @@ import dt_maze_challenge.action.ActionSet;
 import dt_maze_challenge.maze.Maze;
 
 interface SolverType {
-    ActionSet solve(Maze maze);
+    ActionSet solve(Maze maze, boolean withOnlyCost);
 }

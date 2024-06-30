@@ -26,11 +26,11 @@ class ComplexSolver implements SolverType {
     SolverType solver = new TrapSolver();
 
     @Override
-    public ActionSet solve(Maze maze) {
+    public ActionSet solve(Maze maze, boolean withOnlyCost) {
         Maze winnerMaze = maze;
         int minimumSteps = calculateMinimumSteps(maze);
         MazeType[][] protoType = copyMaze(maze.getCoordinates());
-        ActionSet initResult = solver.solve(winnerMaze);
+        ActionSet initResult = solver.solve(winnerMaze, true);
         int mazeCost = initResult.getStepCost() > 0 ? initResult.getStepCost() : MAX_VALUE;
         boolean foundPossibleBest = false;
         for (int i = 1; i <= 18; i++) {
@@ -44,7 +44,7 @@ class ComplexSolver implements SolverType {
                 if (rotatedMaze.anyDoorIsBlocked()) {
                     continue;
                 }
-                int rotatedResultStepCost = solver.solve(rotatedMaze).getStepCost();
+                int rotatedResultStepCost = solver.solve(rotatedMaze, true).getStepCost();
                 int rotatedResultCost = rotatedResultStepCost + i * ROTATION_COST;
                 if (rotatedResultStepCost > 0 && rotatedResultCost < mazeCost) {
                     mazeCost = rotatedResultCost;
@@ -55,7 +55,7 @@ class ComplexSolver implements SolverType {
                 break;
             }
         }
-        return ActionMaker.makeActionSet(winnerMaze);
+        return ActionMaker.makeActionSet(winnerMaze, false);
     }
 
     private Maze rotateMaze(String permutation, MazeType[][] protoType, Maze originMaze) {

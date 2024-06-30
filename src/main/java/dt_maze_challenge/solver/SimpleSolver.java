@@ -18,7 +18,7 @@ import java.util.Queue;
 
 class SimpleSolver implements SolverType {
     @Override
-    public ActionSet solve(Maze maze) {
+    public ActionSet solve(Maze maze, boolean withOnlyCost) {
         Map<Coordinate, Coordinate> visited = new HashMap<>();
         Queue<CoordinateWithPrevious> actual = new LinkedList<>();
 
@@ -56,6 +56,6 @@ class SimpleSolver implements SolverType {
             Collections.reverse(steps);
             maze.setSteps(steps);
         }
-        return ActionMaker.makeActionSet(maze);
+        return ActionMaker.makeActionSet(maze, false);
     }
 }
