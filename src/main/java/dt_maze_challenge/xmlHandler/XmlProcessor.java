@@ -17,6 +17,9 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Reads input xml and creates maze.
+ */
 public class XmlProcessor {
     private XmlProcessor() {}
     public static Maze processXml(String xmlMessage) {

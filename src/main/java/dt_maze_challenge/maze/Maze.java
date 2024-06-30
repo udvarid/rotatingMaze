@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static dt_maze_challenge.util.Util.MAZE_SIZE;
+import static dt_maze_challenge.util.Util.copyMaze;
+
 public class Maze {
-    public static final int SIZE = 17;
     private static final String NO_PERMUTATION = "000000000";
     private final List<MazeType> walkableTypes = Arrays.asList(MazeType.EMPTY, MazeType.ESCAPE, MazeType.TRAP);
 
@@ -14,41 +16,31 @@ public class Maze {
     private Coordinate start;
     private Coordinate end;
     private List<CoordinateWithTrap> steps = new ArrayList<>();
-    private String permutation;
+    private final String permutation;
 
     public Maze(int level) {
-        this.coordinates = new MazeType[SIZE][SIZE];
+        this.coordinates = new MazeType[MAZE_SIZE][MAZE_SIZE];
         this.level = level;
         this.permutation = NO_PERMUTATION;
         fillUpEmptyMaze();
     }
 
     public Maze(int level, MazeType[][] coordinates, String permutation) {
-        this.coordinates = copy(coordinates);
+        this.coordinates = copyMaze(coordinates);
         this.level = level;
         this.permutation = permutation;
     }
 
-    private MazeType[][] copy(MazeType[][] coordinates) {
-        MazeType[][] protoType = new MazeType[SIZE][SIZE];
-        for (int i = 0; i < SIZE; i++) {
-            for (int j = 0; j < SIZE; j++) {
-                protoType[i][j] = coordinates[i][j];
-            }
-        }
-        return protoType;
-    }
-
     private void fillUpEmptyMaze() {
-        for (int i = 0; i < SIZE; i++) {
-            for (int j = 0; j < SIZE; j++) {
+        for (int i = 0; i < MAZE_SIZE; i++) {
+            for (int j = 0; j < MAZE_SIZE; j++) {
                 coordinates[i][j] = onTheEdge(i,j) ? MazeType.WALL : MazeType.EMPTY;
             }
         }
     }
 
     private boolean onTheEdge(int i, int j) {
-        return i == 0 || j == 0 || i == SIZE - 1 || j == SIZE - 1;
+        return i == 0 || j == 0 || i == MAZE_SIZE - 1 || j == MAZE_SIZE - 1;
     }
 
     public MazeType[][] getCoordinates() {
@@ -71,13 +63,13 @@ public class Maze {
         return permutation;
     }
 
-    public boolean isPermutated() {
+    public boolean isPermuted() {
         return !permutation.equals(NO_PERMUTATION);
     }
 
     public void showMaze() {
-        for (int i = 0; i < SIZE; i++) {
-            for (int j = 0; j < SIZE; j++) {
+        for (int i = 0; i < MAZE_SIZE; i++) {
+            for (int j = 0; j < MAZE_SIZE; j++) {
                 String ord = String.valueOf(this.coordinates[i][j].ordinal());
                 if (this.coordinates[i][j] == MazeType.WALL) {
                     ord = "|";
@@ -105,7 +97,7 @@ public class Maze {
 
     public List<Coordinate> getWalkableCoordinates(Coordinate coordinate) {
         List<Coordinate> result = new ArrayList<>();
-        List<Coordinate> possibleCoordinates = coordinate.getNeighbours(SIZE - 1);
+        List<Coordinate> possibleCoordinates = coordinate.getNeighbours(MAZE_SIZE - 1);
         possibleCoordinates.forEach(coord -> {
             if (walkableTypes.contains(this.coordinates[coord.x()][coord.y()])) {
                 result.add(coord);
@@ -119,8 +111,8 @@ public class Maze {
     }
 
     public boolean anyDoorIsBlocked() {
-        List<Coordinate> possibleCoordinatesForStart = this.start.getNeighbours(SIZE - 1);
-        List<Coordinate> possibleCoordinatesForEnd = this.end.getNeighbours(SIZE - 1);
+        List<Coordinate> possibleCoordinatesForStart = this.start.getNeighbours(MAZE_SIZE - 1);
+        List<Coordinate> possibleCoordinatesForEnd = this.end.getNeighbours(MAZE_SIZE - 1);
         boolean startBlocked = possibleCoordinatesForStart.stream().noneMatch( coord ->
             walkableTypes.contains(this.coordinates[coord.x()][coord.y()])
         );

@@ -8,7 +8,7 @@ import dt_maze_challenge.xmlHandler.XmlWriter;
 
 public class Solution {
 	public static void main(String[] args) {
-		var testFileName = "example_maze_3.txt";
+		var testFileName = "example_maze_4.txt";
 		String mazeXml = args.length > 0 ? args[0] : FileReader.readFromFile(testFileName);
 		Maze maze = XmlProcessor.processXml(mazeXml);
 

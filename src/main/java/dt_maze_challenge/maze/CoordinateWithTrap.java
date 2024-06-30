@@ -21,8 +21,8 @@ public class CoordinateWithTrap {
         return trap;
     }
 
-    public void setTrap(boolean trap) {
-        this.trap = trap;
+    public void turnOffTrap() {
+        this.trap = false;
     }
 }
 

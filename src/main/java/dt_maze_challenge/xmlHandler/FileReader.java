@@ -4,6 +4,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
+/**
+ * This class is used only for testing
+ */
 public class FileReader {
     private FileReader(){}
     public static String readFromFile(String fileName) {

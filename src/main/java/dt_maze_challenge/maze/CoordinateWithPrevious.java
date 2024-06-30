@@ -36,7 +36,7 @@ public class CoordinateWithPrevious {
         length++;
     }
 
-    public void putToWait() {
+    public void forceToWait() {
         this.wait = this.length;
     }
 
@@ -46,7 +46,7 @@ public class CoordinateWithPrevious {
         }
     }
 
-    public boolean readyToGo() {
+    public boolean notWaiting() {
         return wait == 0;
     }
 

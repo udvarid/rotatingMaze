@@ -9,7 +9,6 @@ import java.util.List;
 
 public class ActionMaker {
     private ActionMaker() {}
-    public static final int ROTATION_COST = 5;
     public static ActionSet makeActionSet(Maze maze) {
         var stepCoordinates = maze.getSteps();
         if (stepCoordinates.isEmpty()) {
@@ -22,7 +21,7 @@ public class ActionMaker {
             isTrapFounded = false;
             stepList.add(createStep(maze.getStart(), stepCoordinates.get(0).getCoordinate()));
             if (stepCoordinates.get(0).isTrap()) {
-                stepCoordinates.get(0).setTrap(false);
+                stepCoordinates.get(0).turnOffTrap();
                 isTrapFounded = true;
                 continue;
             }
@@ -30,7 +29,7 @@ public class ActionMaker {
             for (i = 0; i < stepCoordinates.size() - 1; i++) {
                 stepList.add(createStep(stepCoordinates.get(i).getCoordinate(), stepCoordinates.get(i + 1).getCoordinate()));
                 if (stepCoordinates.get(i + 1).isTrap()) {
-                    stepCoordinates.get(i + 1).setTrap(false);
+                    stepCoordinates.get(i + 1).turnOffTrap();
                     isTrapFounded = true;
                     break;
                 }
@@ -41,28 +40,29 @@ public class ActionMaker {
         } while (isTrapFounded);
 
 
-
-
-        List<Rotate> rotationList = new ArrayList<>();
-        if (maze.getLevel() == 3 && maze.isPermutated()) {
-            var permutation = maze.getPermutation();
-            for (int i = 0; i < permutation.length(); i++) {
-                char ch = permutation.charAt(i);
-                if (ch != '0') {
-                    switch (ch) {
-                        case '1' -> rotationList.add(new Rotate(i + 1, 1));
-                        case '2' -> rotationList.add(new Rotate(i + 1, 2));
-                        case '3' -> {
-                            rotationList.add(new Rotate(i + 1, 1));
-                            rotationList.add(new Rotate(i + 1, 1));
-                            }
-                        }
-                    }
-                }
-            }
+        List<Rotate> rotationList = getRotations(maze);
         var actionSet = new ActionSet(aggregateSteps(stepList),rotationList);
         actionSet.setStepCost(stepList.size());
         return actionSet;
+    }
+
+    private static List<Rotate> getRotations(Maze maze) {
+        List<Rotate> rotationList = new ArrayList<>();
+        if (maze.getLevel() == 3 && maze.isPermuted()) {
+            var permutation = maze.getPermutation();
+            for (int i = 0; i < permutation.length(); i++) {
+                char ch = permutation.charAt(i);
+                if (ch == '1') {
+                    rotationList.add(new Rotate(i + 1, 1));
+                } else if (ch == '2') {
+                    rotationList.add(new Rotate(i + 1, 2));
+                } else if (ch == '3') {
+                    rotationList.add(new Rotate(i + 1, 1));
+                    rotationList.add(new Rotate(i + 1, 1));
+                }
+            }
+        }
+        return rotationList;
     }
 
     private static List<Step> aggregateSteps(List<Step> steps) {

@@ -15,6 +15,9 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.StringWriter;
 
+/**
+ * Creates output message based on Actionset
+ */
 public class XmlWriter {
     private XmlWriter() {}
     public static String writeXml(ActionSet actionSet) {
@@ -23,12 +26,10 @@ public class XmlWriter {
             return result;
         }
         try {
-            // Step 1: Create a new Document
             DocumentBuilderFactory documentFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder documentBuilder = documentFactory.newDocumentBuilder();
             Document document = documentBuilder.newDocument();
 
-            // Step 2: Create the root element
             Element root = document.createElement("Actions");
             document.appendChild(root);
 
@@ -56,8 +57,6 @@ public class XmlWriter {
             }
             );
 
-            // Step 5: Transform the Document to a String or File
-            // Transform to String
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
