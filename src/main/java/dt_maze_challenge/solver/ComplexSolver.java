@@ -1,7 +1,5 @@
 package dt_maze_challenge.solver;
 
-import dt_maze_challenge.action.ActionMaker;
-import dt_maze_challenge.action.ActionSet;
 import dt_maze_challenge.maze.Maze;
 import dt_maze_challenge.maze.MazeType;
 
@@ -26,12 +24,12 @@ class ComplexSolver implements SolverType {
     SolverType solver = new TrapSolver();
 
     @Override
-    public ActionSet solve(Maze maze, boolean withOnlyCost) {
+    public Maze solve(Maze maze) {
         Maze winnerMaze = maze;
         int minimumSteps = calculateMinimumSteps(maze);
         MazeType[][] protoType = copyMaze(maze.getCoordinates());
-        ActionSet initResult = solver.solve(winnerMaze, true);
-        int mazeCost = initResult.getStepCost() > 0 ? initResult.getStepCost() : MAX_VALUE;
+        int initResult = solver.solve(winnerMaze).getCost();
+        int mazeCost = initResult > 0 ? initResult : MAX_VALUE;
         boolean foundPossibleBest = false;
         for (int i = 1; i <= 18; i++) {
             Set<String> permutationOnThisLevel = permutations.get(i);
@@ -42,7 +40,7 @@ class ComplexSolver implements SolverType {
                 }
                 Maze rotatedMaze = rotateMaze(perm, protoType, maze);
                 if (!rotatedMaze.anyDoorIsBlocked()) {
-                    int rotatedResultStepCost = solver.solve(rotatedMaze, true).getStepCost();
+                    int rotatedResultStepCost = solver.solve(rotatedMaze).getCost();
                     int rotatedResultCost = rotatedResultStepCost + i * ROTATION_COST;
                     if (rotatedResultStepCost > 0 && rotatedResultCost < mazeCost) {
                         mazeCost = rotatedResultCost;
@@ -54,7 +52,7 @@ class ComplexSolver implements SolverType {
                 break;
             }
         }
-        return ActionMaker.makeActionSet(winnerMaze, false);
+        return winnerMaze;
     }
 
     private Maze rotateMaze(String permutation, MazeType[][] protoType, Maze originMaze) {
@@ -71,13 +69,13 @@ class ComplexSolver implements SolverType {
         return rotatedMaze;
     }
 
-    private void rotateSector(MazeType[][] coord, int sector, char rotationType) {
+    private void rotateSector(MazeType[][] cord, int sector, char rotationType) {
         int x = (sector / 3) * 5 + 1;
         int y = (sector % 3) * 5 + 1;
         MazeType[][] tiny = new MazeType[5][5];
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 5; j++) {
-                tiny[i][j] = coord[x + i][y + j];
+                tiny[i][j] = cord[x + i][y + j];
             }
         }
         if (rotationType == '1') {
@@ -90,7 +88,7 @@ class ComplexSolver implements SolverType {
         }
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 5; j++) {
-                coord[x + i][y + j] = tiny[i][j];
+                cord[x + i][y + j] = tiny[i][j];
             }
         }
     }

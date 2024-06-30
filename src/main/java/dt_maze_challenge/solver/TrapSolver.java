@@ -1,7 +1,5 @@
 package dt_maze_challenge.solver;
 
-import dt_maze_challenge.action.ActionMaker;
-import dt_maze_challenge.action.ActionSet;
 import dt_maze_challenge.maze.Coordinate;
 import dt_maze_challenge.maze.CoordinateWithPrevious;
 import dt_maze_challenge.maze.CoordinateWithTrap;
@@ -18,25 +16,26 @@ import java.util.Queue;
 
 class TrapSolver implements SolverType {
     @Override
-    public ActionSet solve(Maze maze, boolean withOnlyCost) {
-        Map<Coordinate, Coordinate> visited = new HashMap<>();
+    public Maze solve(Maze maze) {
+        Map<Coordinate, CoordinateWithPrevious> visited = new HashMap<>();
         Queue<CoordinateWithPrevious> actual = new LinkedList<>();
 
         Coordinate start = maze.getStart();
-        maze.getWalkableCoordinates(start).forEach(c -> actual.offer(new CoordinateWithPrevious(c, start)));
+        maze.getWalkableCoordinates(start).forEach(c -> actual.offer(new CoordinateWithPrevious(c, start, 1,1)));
         boolean endFound = false;
         while (!actual.isEmpty() && !endFound) {
             CoordinateWithPrevious current = actual.poll();
+            current.increaseCost();
             if (current.notWaiting()) {
                 current.increaseLength();
-                visited.put(current.getCurrent(), current.getPrevious());
+                visited.put(current.getCurrent(), current);
                 List<Coordinate> walkableCells = maze.getWalkableCoordinates(current.getCurrent());
                 for (Coordinate c : walkableCells) {
                     MazeType typeOfCell = maze.getType(c);
-                    CoordinateWithPrevious cp = new CoordinateWithPrevious(c, current.getCurrent(), current.getLength());
+                    CoordinateWithPrevious cp = new CoordinateWithPrevious(c, current.getCurrent(), current.getLength(), current.getCost());
                     if (typeOfCell == MazeType.ESCAPE) {
                         endFound = true;
-                        visited.put(cp.getCurrent(), cp.getPrevious());
+                        visited.put(cp.getCurrent(), cp);
                     } else if (!visited.containsKey(cp.getCurrent()) && !actual.contains(cp)) {
                         if (typeOfCell == MazeType.TRAP) {
                             cp.forceToWait();
@@ -52,10 +51,11 @@ class TrapSolver implements SolverType {
 
         if (endFound) {
             Coordinate coordinate = maze.getEnd();
+            int mazeCost = visited.get(coordinate).getCost();
             List<CoordinateWithTrap> steps = new ArrayList<>();
             boolean startFound = false;
             while (!startFound) {
-                coordinate = visited.get(coordinate);
+                coordinate = visited.get(coordinate).getPrevious();
                 MazeType typeOfCell = maze.getType(coordinate);
                 if (typeOfCell == MazeType.ENTRY) {
                     startFound = true;
@@ -71,7 +71,8 @@ class TrapSolver implements SolverType {
             }
             Collections.reverse(steps);
             maze.setSteps(steps);
+            maze.setCost(mazeCost);
         }
-        return ActionMaker.makeActionSet(maze, withOnlyCost);
+        return maze;
     }
 }

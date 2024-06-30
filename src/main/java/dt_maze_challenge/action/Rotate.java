@@ -1,8 +1,8 @@
 package dt_maze_challenge.action;
 
 public class Rotate {
-    private int district;
-    private int direction;
+    private final int district;
+    private final int direction;
 
     public Rotate(int district, int direction) {
         this.district = district;

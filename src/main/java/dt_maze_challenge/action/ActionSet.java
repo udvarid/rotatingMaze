@@ -3,9 +3,8 @@ package dt_maze_challenge.action;
 import java.util.List;
 
 public class ActionSet {
-    private List<Step> steps;
-    private List<Rotate> rotates;
-    private int stepCost;
+    private final List<Step> steps;
+    private final List<Rotate> rotates;
 
     public ActionSet(List<Step> steps, List<Rotate> rotates) {
         this.steps = steps;
@@ -18,14 +17,6 @@ public class ActionSet {
 
     public List<Rotate> getRotates() {
         return rotates;
-    }
-
-    public int getStepCost() {
-        return stepCost;
-    }
-
-    public void setStepCost(int stepCost) {
-        this.stepCost = stepCost;
     }
 
     public boolean isEmpty() {

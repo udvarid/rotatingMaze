@@ -4,20 +4,22 @@ import java.util.Objects;
 
 public class CoordinateWithPrevious {
 
-    private Coordinate current;
-    private Coordinate previous;
+    private final Coordinate current;
+    private final Coordinate previous;
     private int length;
     private int wait;
+    private int cost;
 
     public CoordinateWithPrevious(Coordinate current, Coordinate previous) {
         this.current = current;
         this.previous = previous;
     }
 
-    public CoordinateWithPrevious(Coordinate current, Coordinate previous, int length) {
+    public CoordinateWithPrevious(Coordinate current, Coordinate previous, int length, int cost) {
         this.current = current;
         this.previous = previous;
         this.length = length;
+        this.cost = cost;
     }
 
     public Coordinate getCurrent() {
@@ -34,6 +36,14 @@ public class CoordinateWithPrevious {
 
     public void increaseLength() {
         length++;
+    }
+
+    public void increaseCost() {
+        cost++;
+    }
+
+    public int getCost() {
+        return cost;
     }
 
     public void forceToWait() {

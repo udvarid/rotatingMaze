@@ -1,7 +1,5 @@
 package dt_maze_challenge.solver;
 
-import dt_maze_challenge.action.ActionMaker;
-import dt_maze_challenge.action.ActionSet;
 import dt_maze_challenge.maze.Coordinate;
 import dt_maze_challenge.maze.CoordinateWithPrevious;
 import dt_maze_challenge.maze.CoordinateWithTrap;
@@ -18,7 +16,7 @@ import java.util.Queue;
 
 class SimpleSolver implements SolverType {
     @Override
-    public ActionSet solve(Maze maze, boolean withOnlyCost) {
+    public Maze solve(Maze maze) {
         Map<Coordinate, Coordinate> visited = new HashMap<>();
         Queue<CoordinateWithPrevious> actual = new LinkedList<>();
 
@@ -56,6 +54,6 @@ class SimpleSolver implements SolverType {
             Collections.reverse(steps);
             maze.setSteps(steps);
         }
-        return ActionMaker.makeActionSet(maze, false);
+        return maze;
     }
 }

@@ -10,7 +10,7 @@ import java.util.List;
 
 public class ActionMaker {
     private ActionMaker() {}
-    public static ActionSet makeActionSet(Maze maze, boolean onlyCost) {
+    public static ActionSet makeActionSet(Maze maze) {
         List<CoordinateWithTrap> stepCoordinates = maze.getSteps();
         if (stepCoordinates.isEmpty()) {
             return new ActionSet(Collections.emptyList(), Collections.emptyList());
@@ -40,16 +40,8 @@ public class ActionMaker {
             }
         } while (isTrapFounded);
 
-        if (onlyCost) {
-            ActionSet actionSetWithOnlyCost = new ActionSet(Collections.emptyList(), Collections.emptyList());
-            actionSetWithOnlyCost.setStepCost(stepList.size());
-            return actionSetWithOnlyCost;
-        }
-
         List<Rotate> rotationList = getRotations(maze);
-        ActionSet actionSet = new ActionSet(aggregateSteps(stepList),rotationList);
-        actionSet.setStepCost(stepList.size());
-        return actionSet;
+        return new ActionSet(aggregateSteps(stepList),rotationList);
     }
 
     private static List<Rotate> getRotations(Maze maze) {

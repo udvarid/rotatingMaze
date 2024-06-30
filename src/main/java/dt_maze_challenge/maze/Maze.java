@@ -17,6 +17,7 @@ public class Maze {
     private Coordinate end;
     private List<CoordinateWithTrap> steps = new ArrayList<>();
     private final String permutation;
+    private int cost;
 
     public Maze(int level) {
         this.coordinates = new MazeType[MAZE_SIZE][MAZE_SIZE];
@@ -49,6 +50,14 @@ public class Maze {
 
     public int getLevel() {
         return level;
+    }
+
+    public int getCost() {
+        return cost;
+    }
+
+    public void setCost(int cost) {
+        this.cost = cost;
     }
 
     public List<CoordinateWithTrap> getSteps() {

@@ -43,18 +43,18 @@ public class XmlProcessor {
 
         getCoordinates(document.getElementsByTagName("StartPoint"))
                 .forEach( it -> {
-                            int coorX = it.getX() - 1;
-                            int coorY = it.getY() - 1;
-                            maze.setStart(new Coordinate(coorX, coorY));
-                            maze.getCoordinates()[coorX][coorY] = MazeType.ENTRY;
+                            int cordX = it.getX() - 1;
+                            int cordY = it.getY() - 1;
+                            maze.setStart(new Coordinate(cordX, cordY));
+                            maze.getCoordinates()[cordX][cordY] = MazeType.ENTRY;
                         }
                 );
         getCoordinates(document.getElementsByTagName("EscapePoint"))
                 .forEach( it -> {
-                            int coorX = it.getX() - 1;
-                            int coorY = it.getY() - 1;
-                            maze.setEnd(new Coordinate(coorX, coorY));
-                            maze.getCoordinates()[coorX][coorY] = MazeType.ESCAPE;
+                            int cordX = it.getX() - 1;
+                            int cordY = it.getY() - 1;
+                            maze.setEnd(new Coordinate(cordX, cordY));
+                            maze.getCoordinates()[cordX][cordY] = MazeType.ESCAPE;
                     }
                 );
         getCoordinates(document.getElementsByTagName("Wall"))

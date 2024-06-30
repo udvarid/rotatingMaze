@@ -1,8 +1,8 @@
 package dt_maze_challenge.action;
 
 public class Step {
-    private int direction;
-    private int length;
+    private final int direction;
+    private final int length;
 
     public Step(int direction, int length) {
         this.direction = direction;
