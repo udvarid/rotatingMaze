@@ -37,10 +37,10 @@ public class XmlWriter {
                         Element rot = document.createElement("Rotate");
                         root.appendChild(rot);
                         Element direction = document.createElement("District");
-                        direction.appendChild(document.createTextNode(String.valueOf(rotate.district())));
+                        direction.appendChild(document.createTextNode(String.valueOf(rotate.getDistrict())));
                         rot.appendChild(direction);
                         Element length = document.createElement("Direction");
-                        length.appendChild(document.createTextNode(String.valueOf(rotate.direction())));
+                        length.appendChild(document.createTextNode(String.valueOf(rotate.getDirection())));
                         rot.appendChild(length);
                     }
             );
@@ -49,10 +49,10 @@ public class XmlWriter {
                 Element st = document.createElement("Step");
                 root.appendChild(st);
                 Element direction = document.createElement("Direction");
-                direction.appendChild(document.createTextNode(String.valueOf(step.direction())));
+                direction.appendChild(document.createTextNode(String.valueOf(step.getDirection())));
                 st.appendChild(direction);
                 Element length = document.createElement("CellNumber");
-                length.appendChild(document.createTextNode(String.valueOf(step.length())));
+                length.appendChild(document.createTextNode(String.valueOf(step.getLength())));
                 st.appendChild(length);
             }
             );

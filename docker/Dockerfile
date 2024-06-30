@@ -32,8 +32,8 @@ RUN echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n \
     <version>1.0.0</version>\n \
 \n \
     <properties>\n \
-        <maven.compiler.source>17</maven.compiler.source>\n \
-        <maven.compiler.target>17</maven.compiler.target>\n \
+        <maven.compiler.source>1.8</maven.compiler.source>\n \
+        <maven.compiler.target>1.8</maven.compiler.target>\n \
     </properties>\n \
 \n \
     <build>\n \

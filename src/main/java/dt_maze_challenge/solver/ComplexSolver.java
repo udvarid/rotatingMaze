@@ -30,11 +30,11 @@ class ComplexSolver implements SolverType {
         Maze winnerMaze = maze;
         int minimumSteps = calculateMinimumSteps(maze);
         MazeType[][] protoType = copyMaze(maze.getCoordinates());
-        var initResult = solver.solve(winnerMaze);
+        ActionSet initResult = solver.solve(winnerMaze);
         int mazeCost = initResult.getStepCost() > 0 ? initResult.getStepCost() : MAX_VALUE;
         boolean foundPossibleBest = false;
         for (int i = 1; i <= 18; i++) {
-            var permutationOnThisLevel = permutations.get(i);
+            Set<String> permutationOnThisLevel = permutations.get(i);
             for (String perm : permutationOnThisLevel) {
                 if (mazeCost < minimumSteps + i * ROTATION_COST) {
                     foundPossibleBest = true;
@@ -44,8 +44,8 @@ class ComplexSolver implements SolverType {
                 if (rotatedMaze.anyDoorIsBlocked()) {
                     continue;
                 }
-                var rotatedResultStepCost = solver.solve(rotatedMaze).getStepCost();
-                var rotatedResultCost = rotatedResultStepCost + i * ROTATION_COST;
+                int rotatedResultStepCost = solver.solve(rotatedMaze).getStepCost();
+                int rotatedResultCost = rotatedResultStepCost + i * ROTATION_COST;
                 if (rotatedResultStepCost > 0 && rotatedResultCost < mazeCost) {
                     mazeCost = rotatedResultCost;
                     winnerMaze = rotatedMaze;

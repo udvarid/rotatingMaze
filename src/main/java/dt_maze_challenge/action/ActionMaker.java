@@ -1,6 +1,7 @@
 package dt_maze_challenge.action;
 
 import dt_maze_challenge.maze.Coordinate;
+import dt_maze_challenge.maze.CoordinateWithTrap;
 import dt_maze_challenge.maze.Maze;
 
 import java.util.ArrayList;
@@ -10,7 +11,7 @@ import java.util.List;
 public class ActionMaker {
     private ActionMaker() {}
     public static ActionSet makeActionSet(Maze maze) {
-        var stepCoordinates = maze.getSteps();
+        List<CoordinateWithTrap> stepCoordinates = maze.getSteps();
         if (stepCoordinates.isEmpty()) {
             return new ActionSet(Collections.emptyList(), Collections.emptyList());
         }
@@ -41,7 +42,7 @@ public class ActionMaker {
 
 
         List<Rotate> rotationList = getRotations(maze);
-        var actionSet = new ActionSet(aggregateSteps(stepList),rotationList);
+        ActionSet actionSet = new ActionSet(aggregateSteps(stepList),rotationList);
         actionSet.setStepCost(stepList.size());
         return actionSet;
     }
@@ -49,7 +50,7 @@ public class ActionMaker {
     private static List<Rotate> getRotations(Maze maze) {
         List<Rotate> rotationList = new ArrayList<>();
         if (maze.getLevel() == 3 && maze.isPermuted()) {
-            var permutation = maze.getPermutation();
+            String permutation = maze.getPermutation();
             for (int i = 0; i < permutation.length(); i++) {
                 char ch = permutation.charAt(i);
                 if (ch == '1') {
@@ -67,12 +68,12 @@ public class ActionMaker {
 
     private static List<Step> aggregateSteps(List<Step> steps) {
         List<Step> aggregatedSteps = new ArrayList<>();
-        int direction = steps.get(0).direction();
+        int direction = steps.get(0).getDirection();
         int length = 0;
         for (Step step : steps) {
-            if (step.direction() != direction) {
+            if (step.getDirection() != direction) {
                 aggregatedSteps.add(new Step(direction, length));
-                direction = step.direction();
+                direction = step.getDirection();
                 length = 1;
             } else {
                 length++;
@@ -84,13 +85,13 @@ public class ActionMaker {
 
     private static Step createStep(Coordinate coorFist, Coordinate coorSecond) {
         int direction = 0;
-        if (coorFist.y() > coorSecond.y()) {
+        if (coorFist.getY() > coorSecond.getY()) {
             direction = 1;
-        } else if (coorFist.y() < coorSecond.y()) {
+        } else if (coorFist.getY() < coorSecond.getY()) {
             direction = 2;
-        } else if (coorFist.x() > coorSecond.x()) {
+        } else if (coorFist.getX() > coorSecond.getX()) {
             direction = 3;
-        } else if (coorFist.x() < coorSecond.x()) {
+        } else if (coorFist.getX() < coorSecond.getX()) {
             direction = 4;
         }
         return new Step(direction,1);

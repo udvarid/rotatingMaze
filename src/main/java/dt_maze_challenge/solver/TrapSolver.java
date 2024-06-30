@@ -22,18 +22,18 @@ class TrapSolver implements SolverType {
         Map<Coordinate, Coordinate> visited = new HashMap<>();
         Queue<CoordinateWithPrevious> actual = new LinkedList<>();
 
-        var start = maze.getStart();
+        Coordinate start = maze.getStart();
         maze.getWalkableCoordinates(start).forEach(c -> actual.offer(new CoordinateWithPrevious(c, start)));
         boolean endFound = false;
         while (!actual.isEmpty() && !endFound) {
-            var current = actual.poll();
+            CoordinateWithPrevious current = actual.poll();
             if (current.notWaiting()) {
                 current.increaseLength();
                 visited.put(current.getCurrent(), current.getPrevious());
-                var walkableCells = maze.getWalkableCoordinates(current.getCurrent());
+                List<Coordinate> walkableCells = maze.getWalkableCoordinates(current.getCurrent());
                 for (Coordinate c : walkableCells) {
-                    var typeOfCell = maze.getType(c);
-                    var cp = new CoordinateWithPrevious(c, current.getCurrent(), current.getLength());
+                    MazeType typeOfCell = maze.getType(c);
+                    CoordinateWithPrevious cp = new CoordinateWithPrevious(c, current.getCurrent(), current.getLength());
                     if (typeOfCell == MazeType.ESCAPE) {
                         endFound = true;
                         visited.put(cp.getCurrent(), cp.getPrevious());
@@ -56,16 +56,16 @@ class TrapSolver implements SolverType {
             boolean startFound = false;
             while (!startFound) {
                 coordinate = visited.get(coordinate);
-                var typeOfCell = maze.getType(coordinate);
+                MazeType typeOfCell = maze.getType(coordinate);
                 if (typeOfCell == MazeType.ENTRY) {
                     startFound = true;
                 } else {
                     if (typeOfCell == MazeType.EMPTY) {
                         steps.add(new CoordinateWithTrap(coordinate));
-                        maze.getCoordinates()[coordinate.x()][coordinate.y()] = MazeType.STEP;
+                        maze.getCoordinates()[coordinate.getX()][coordinate.getY()] = MazeType.STEP;
                     } else {
                         steps.add(new CoordinateWithTrap(coordinate, true));
-                        maze.getCoordinates()[coordinate.x()][coordinate.y()] = MazeType.STEP_ON_TRAP;
+                        maze.getCoordinates()[coordinate.getX()][coordinate.getY()] = MazeType.STEP_ON_TRAP;
                     }
                 }
             }

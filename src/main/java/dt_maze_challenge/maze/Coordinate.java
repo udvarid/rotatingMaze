@@ -2,8 +2,26 @@ package dt_maze_challenge.maze;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-public record Coordinate(int x, int y) {
+public class Coordinate {
+
+    private int x;
+    private int y;
+
+    public Coordinate(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
     public List<Coordinate> getNeighbours(int max) {
         List<Coordinate> result = new ArrayList<>();
         if (x > 0) {
@@ -19,5 +37,18 @@ public record Coordinate(int x, int y) {
             result.add(new Coordinate(this.x, this.y + 1));
         }
         return result;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Coordinate that = (Coordinate) o;
+        return x == that.x && y == that.y;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(x, y);
     }
 }

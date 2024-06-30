@@ -1,5 +1,6 @@
 package dt_maze_challenge.solver.helper;
 
+import dt_maze_challenge.maze.Coordinate;
 import dt_maze_challenge.maze.Maze;
 import dt_maze_challenge.maze.MazeType;
 
@@ -24,11 +25,11 @@ public class SolverUtil {
                                 for (int i7 = 0; i7 <= 3; i7++) {
                                     for (int i8 = 0; i8 <= 3; i8++) {
                                         for (int i9 = 0; i9 <= 3; i9++) {
-                                            var swv = createPermutationStringWithValue(Arrays.asList(i1, i2, i3, i4, i5, i6, i7, i8, i9));
+                                            StringWithValue swv = createPermutationStringWithValue(Arrays.asList(i1, i2, i3, i4, i5, i6, i7, i8, i9));
                                             if (permutations.containsKey(swv.getValue())) {
                                                 permutations.get(swv.value).add(swv.getCombination());
                                             } else {
-                                                var set = new HashSet<String>();
+                                                Set<String> set = new HashSet<>();
                                                 set.add(swv.combination);
                                                 permutations.put(swv.value, set);
                                             }
@@ -55,17 +56,19 @@ public class SolverUtil {
     }
 
     static int getNumberOfRotationValue(int number) {
-        return switch (number) {
-            case 1, 2 -> 1;
-            case 3 -> 2;
-            default -> 0;
-        };
+        int result = 0;
+        if (number == 1 || number == 2) {
+            result = 1;
+        } else if (number == 3) {
+            result = 2;
+        }
+        return result;
     }
 
     public static int calculateMinimumSteps(Maze maze) {
-        var start = maze.getStart();
-        var end = maze.getEnd();
-        return Math.abs(start.x()- end.x()) + Math.abs(start.y() - end.y());
+        Coordinate start = maze.getStart();
+        Coordinate end = maze.getEnd();
+        return Math.abs(start.getX()- end.getX()) + Math.abs(start.getY() - end.getY());
     }
 
     public static MazeType[][] rotateLeft(MazeType[][] tiny) {

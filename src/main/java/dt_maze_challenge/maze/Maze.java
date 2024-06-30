@@ -99,7 +99,7 @@ public class Maze {
         List<Coordinate> result = new ArrayList<>();
         List<Coordinate> possibleCoordinates = coordinate.getNeighbours(MAZE_SIZE - 1);
         possibleCoordinates.forEach(coord -> {
-            if (walkableTypes.contains(this.coordinates[coord.x()][coord.y()])) {
+            if (walkableTypes.contains(this.coordinates[coord.getX()][coord.getY()])) {
                 result.add(coord);
             }
         });
@@ -107,17 +107,17 @@ public class Maze {
     }
 
     public MazeType getType(Coordinate coordinate) {
-        return this.coordinates[coordinate.x()][coordinate.y()];
+        return this.coordinates[coordinate.getX()][coordinate.getY()];
     }
 
     public boolean anyDoorIsBlocked() {
         List<Coordinate> possibleCoordinatesForStart = this.start.getNeighbours(MAZE_SIZE - 1);
         List<Coordinate> possibleCoordinatesForEnd = this.end.getNeighbours(MAZE_SIZE - 1);
         boolean startBlocked = possibleCoordinatesForStart.stream().noneMatch( coord ->
-            walkableTypes.contains(this.coordinates[coord.x()][coord.y()])
+            walkableTypes.contains(this.coordinates[coord.getX()][coord.getY()])
         );
         boolean endBlocked = possibleCoordinatesForEnd.stream().noneMatch( coord ->
-                walkableTypes.contains(this.coordinates[coord.x()][coord.y()])
+                walkableTypes.contains(this.coordinates[coord.getX()][coord.getY()])
         );
         return startBlocked || endBlocked;
     }
