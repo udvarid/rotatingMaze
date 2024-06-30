@@ -41,14 +41,13 @@ class ComplexSolver implements SolverType {
                     break;
                 }
                 Maze rotatedMaze = rotateMaze(perm, protoType, maze);
-                if (rotatedMaze.anyDoorIsBlocked()) {
-                    continue;
-                }
-                int rotatedResultStepCost = solver.solve(rotatedMaze, true).getStepCost();
-                int rotatedResultCost = rotatedResultStepCost + i * ROTATION_COST;
-                if (rotatedResultStepCost > 0 && rotatedResultCost < mazeCost) {
-                    mazeCost = rotatedResultCost;
-                    winnerMaze = rotatedMaze;
+                if (!rotatedMaze.anyDoorIsBlocked()) {
+                    int rotatedResultStepCost = solver.solve(rotatedMaze, true).getStepCost();
+                    int rotatedResultCost = rotatedResultStepCost + i * ROTATION_COST;
+                    if (rotatedResultStepCost > 0 && rotatedResultCost < mazeCost) {
+                        mazeCost = rotatedResultCost;
+                        winnerMaze = rotatedMaze;
+                    }
                 }
             }
             if (foundPossibleBest) {
