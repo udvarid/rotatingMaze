@@ -6,21 +6,15 @@ import dt_maze_challenge.maze.MazeType;
 import java.util.Map;
 import java.util.Set;
 
-import static dt_maze_challenge.solver.helper.SolverUtil.calculateMinimumSteps;
-import static dt_maze_challenge.solver.helper.SolverUtil.fillUpPermutationsEasy;
-import static dt_maze_challenge.solver.helper.SolverUtil.rotateLeft;
-import static dt_maze_challenge.solver.helper.SolverUtil.rotateRight;
-import static dt_maze_challenge.util.Util.ROTATION_COST;
-import static dt_maze_challenge.util.Util.copyMaze;
+import static dt_maze_challenge.solver.helper.SolverUtil.*;
+import static dt_maze_challenge.util.Util.*;
 import static java.lang.Integer.MAX_VALUE;
 
 class ComplexSolver implements SolverType {
     Map<Integer, Set<String>> permutations;
 
-    private final int LEVEL_OF_COMPLEXITY = 1;
-
     public ComplexSolver() {
-        permutations = fillUpPermutationsEasy();
+        permutations = IS_COMPLEX ? fillUpPermutations() : fillUpPermutationsEasy();
     }
 
     SolverType solver = new TrapSolver();
@@ -33,7 +27,8 @@ class ComplexSolver implements SolverType {
         int initResult = solver.solve(winnerMaze).getCost();
         int mazeCost = initResult > 0 ? initResult : MAX_VALUE;
         boolean foundPossibleBest = false;
-        for (int i = 1; i <= LEVEL_OF_COMPLEXITY; i++) {
+        int levelOfComplexity = IS_COMPLEX ? 18 : 1;
+        for (int i = 1; i <= levelOfComplexity; i++) {
             Set<String> permutationOnThisLevel = permutations.get(i);
             for (String perm : permutationOnThisLevel) {
                 if (mazeCost < minimumSteps + i * ROTATION_COST) {

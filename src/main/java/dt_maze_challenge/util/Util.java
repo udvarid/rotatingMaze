@@ -9,6 +9,7 @@ public class Util {
 
     public static final int ROTATION_COST = 5;
     public static final int MAZE_SIZE = 17;
+    public static final boolean IS_COMPLEX = false;
 
     public static MazeType[][] copyMaze(MazeType[][] coordinates) {
         MazeType[][] protoType = new MazeType[MAZE_SIZE][MAZE_SIZE];
