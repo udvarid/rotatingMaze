@@ -45,6 +45,31 @@ public class SolverUtil {
         return permutations;
     }
 
+    public static Map<Integer, Set<String>> fillUpPermutationsEasy() {
+        Map<Integer, Set<String>> permutations = new HashMap<>();
+        Set<String> easyVersion = new HashSet<>();
+        easyVersion.add("100000000");
+        easyVersion.add("010000000");
+        easyVersion.add("001000000");
+        easyVersion.add("000100000");
+        easyVersion.add("000010000");
+        easyVersion.add("000001000");
+        easyVersion.add("000000100");
+        easyVersion.add("000000010");
+        easyVersion.add("000000001");
+        easyVersion.add("200000000");
+        easyVersion.add("020000000");
+        easyVersion.add("002000000");
+        easyVersion.add("000200000");
+        easyVersion.add("000020000");
+        easyVersion.add("000002000");
+        easyVersion.add("000000200");
+        easyVersion.add("000000020");
+        easyVersion.add("000000002");
+        permutations.put(1, easyVersion);
+        return permutations;
+    }
+
     public static StringWithValue createPermutationStringWithValue(List<Integer> numbers) {
         StringBuilder sb = new StringBuilder();
         int value = 0;
